@@ -1,0 +1,55 @@
+# Achievement System for Cursor
+
+When notable coding milestones are reached, celebrate with an Xbox-style achievement notification.
+
+## How to Trigger
+
+Use Playwright browser tools to navigate to the achievement page with URL params:
+
+```
+browser_navigate to http://localhost:5052/achievement.html?title=TITLE&score=SCORE&desc=DESCRIPTION
+```
+
+Or use the shell script:
+```bash
+./unlock.sh "Title" score "Description"
+```
+
+## Achievement Triggers
+
+Trigger achievements for these milestones:
+
+| Event | Achievement | Score | Description |
+|-------|-------------|-------|-------------|
+| Deployed to production | Ship It! | 50 | Deployed to production |
+| Fixed a bug | Bug Squasher | 25 | Fixed a nasty bug |
+| All tests passing | All Green | 25 | All tests passing |
+| First commit of session | Hello World | 15 | Made your first commit |
+| PR merged | Merge Master | 25 | PR merged to main |
+| Wrote documentation | Future You Thanks You | 20 | Wrote documentation |
+| Coding after midnight | Night Owl | 10 | Coding past midnight |
+| Coding before 7am | Early Bird | 10 | Coding before 7am |
+| First sale/user | First Sale! | 100 | Someone paid real money |
+| Refactored code | Clean Code | 30 | Refactored legacy code |
+
+## URL Encoding
+
+Remember to URL-encode spaces and special characters:
+- Space → %20
+- ! → %21
+- ' → %27
+
+Example:
+```
+?title=Ship%20It!&score=50&desc=Deployed%20to%20production
+```
+
+## Server Setup
+
+Before triggering, ensure a server is running:
+```bash
+cd /path/to/achievement-unlocked-cursor-trophies
+python3 -m http.server 5052
+```
+
+Or use the unlock script which handles this automatically.

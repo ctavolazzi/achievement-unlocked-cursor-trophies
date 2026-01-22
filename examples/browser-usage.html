@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Usage Example</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #fff;
+        }
+        button {
+            padding: 15px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #107c10;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0e6b0e;
+        }
+        code {
+            background: #333;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        pre {
+            background: #333;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Achievement System - Basic Example</h1>
+    
+    <p>Click the buttons to trigger achievements:</p>
+    
+    <button onclick="Achievement.unlock('Hello World', 10, 'Your first achievement!')">
+        Basic Achievement
+    </button>
+    
+    <button onclick="AchievementPresets.shipIt()">
+        Ship It! (Preset)
+    </button>
+    
+    <button onclick="AchievementPresets.random()">
+        Random!
+    </button>
+    
+    <h2>Code</h2>
+    
+    <pre><code>&lt;script src="../src/achievement.js"&gt;&lt;/script&gt;
+&lt;script src="../src/tracker.js"&gt;&lt;/script&gt;
+&lt;script src="../src/presets.js"&gt;&lt;/script&gt;
+
+&lt;script&gt;
+  // Basic usage
+  Achievement.unlock("Title", 50, "Description");
+  
+  // Using presets
+  AchievementPresets.shipIt();
+  
+  // Check progress
+  console.log(AchievementTracker.getGamerscore());
+&lt;/script&gt;</code></pre>
+
+    <h2>Console Commands</h2>
+    <p>Open DevTools and try:</p>
+    <pre><code>Achievement.unlock("Custom", 100, "From console!")
+AchievementPresets.list()
+AchievementTracker.getUnlocked()</code></pre>
+
+    <script src="../src/achievement.js"></script>
+    <script src="../src/tracker.js"></script>
+    <script src="../src/presets.js"></script>
+</body>
+</html>

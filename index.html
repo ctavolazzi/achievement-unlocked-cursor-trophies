@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievement Unlocked - Cursor Trophies</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #107c10, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            color: #888;
+            font-size: 1.1rem;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #107c10;
+        }
+        
+        .stat-label {
+            color: #888;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        section {
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        h2 {
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .custom-form {
+            display: grid;
+            grid-template-columns: 1fr 100px 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 600px) {
+            .custom-form {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        input, button {
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 1rem;
+        }
+        
+        input:focus {
+            outline: none;
+            border-color: #107c10;
+        }
+        
+        input::placeholder {
+            color: #666;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #107c10 0%, #0e6b0e 100%);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(16,124,16,0.4);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+            box-shadow: 0 4px 20px rgba(255,255,255,0.1);
+        }
+        
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 10px;
+        }
+        
+        .preset-btn {
+            padding: 15px;
+            text-align: left;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .preset-btn:hover {
+            background: rgba(16,124,16,0.2);
+            border-color: #107c10;
+        }
+        
+        .preset-name {
+            font-weight: 600;
+            display: block;
+        }
+        
+        .preset-score {
+            color: #888;
+            font-size: 0.85rem;
+        }
+        
+        .unlocked-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .unlocked-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #107c10;
+        }
+        
+        .unlocked-icon {
+            width: 40px;
+            height: 40px;
+            background: #107c10;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .unlocked-icon svg {
+            width: 24px;
+            height: 24px;
+            fill: white;
+        }
+        
+        .unlocked-info {
+            flex: 1;
+        }
+        
+        .unlocked-title {
+            font-weight: 600;
+        }
+        
+        .unlocked-desc {
+            color: #888;
+            font-size: 0.85rem;
+        }
+        
+        .unlocked-meta {
+            text-align: right;
+            color: #888;
+            font-size: 0.85rem;
+        }
+        
+        .unlocked-score {
+            color: #107c10;
+            font-weight: 600;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+        
+        footer {
+            text-align: center;
+            margin-top: 50px;
+            color: #666;
+        }
+        
+        footer a {
+            color: #107c10;
+            text-decoration: none;
+        }
+        
+        footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Achievement Unlocked</h1>
+            <p class="subtitle">Xbox-style developer trophies for Cursor IDE</p>
+        </header>
+        
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-value" id="total-score">0</div>
+                <div class="stat-label">Gamerscore</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="total-unlocked">0</div>
+                <div class="stat-label">Unlocked</div>
+            </div>
+        </div>
+        
+        <section>
+            <h2>🎮 Create Custom Achievement</h2>
+            <div class="custom-form">
+                <input type="text" id="custom-title" placeholder="Achievement Title" value="Nice Work!">
+                <input type="number" id="custom-score" placeholder="Score" value="50" min="1" max="999">
+                <input type="text" id="custom-desc" placeholder="Description (optional)">
+            </div>
+            <button onclick="unlockCustom()">Unlock Achievement</button>
+        </section>
+        
+        <section>
+            <h2>⚡ Quick Presets</h2>
+            <div class="preset-grid">
+                <button class="preset-btn" onclick="AchievementPresets.shipIt()">
+                    <span class="preset-name">Ship It!</span>
+                    <span class="preset-score">50G</span>
+                </button>
+                <button class="preset-btn" onclick="AchievementPresets.bugSquashed()">
+                    <span class="preset-name">Bug Squasher</span>
+                    <span class="preset-score">25G</span>
+                </button>
+                <button class="preset-btn" onclick="AchievementPresets.allGreen()">
+                    <span class="preset-name">All Green</span>
+                    <span class="preset-score">25G</span>
+                </button>
+                <button class="preset-btn" onclick="AchievementPresets.firstCommit()">
+                    <span class="preset-name">Hello World</span>
+                    <span class="preset-score">15G</span>
+                </button>
+                <button class="preset-btn" onclick="AchievementPresets.merged()">
+                    <span class="preset-name">Merge Master</span>
+                    <span class="preset-score">25G</span>
+                </button>
+                <button class="preset-btn" onclick="AchievementPresets.documented()">
+                    <span class="preset-name">Future You Thanks You</span>
+                    <span class="preset-score">20G</span>
+                </button>
+                <button class="preset-btn" onclick="AchievementPresets.firstSale()">
+                    <span class="preset-name">First Sale!</span>
+                    <span class="preset-score">100G</span>
+                </button>
+                <button class="preset-btn" onclick="AchievementPresets.random()">
+                    <span class="preset-name">🎲 Random</span>
+                    <span class="preset-score">???</span>
+                </button>
+            </div>
+        </section>
+        
+        <section>
+            <h2>🏆 Unlocked Achievements</h2>
+            <div class="unlocked-list" id="unlocked-list">
+                <div class="empty-state">
+                    No achievements unlocked yet. Start clicking!
+                </div>
+            </div>
+            <div class="actions">
+                <button class="btn-secondary" onclick="refreshList()">Refresh</button>
+                <button class="btn-secondary" onclick="resetProgress()">Reset Progress</button>
+            </div>
+        </section>
+        
+        <footer>
+            <p>
+                <a href="https://github.com/ctavolazzi/achievement-unlocked-cursor-trophies" target="_blank">GitHub</a>
+                &nbsp;•&nbsp;
+                Made for fun
+            </p>
+        </footer>
+    </div>
+    
+    <script src="src/achievement.js"></script>
+    <script src="src/tracker.js"></script>
+    <script src="src/presets.js"></script>
+    <script>
+        function unlockCustom() {
+            const title = document.getElementById('custom-title').value || 'Achievement';
+            const score = parseInt(document.getElementById('custom-score').value) || 50;
+            const desc = document.getElementById('custom-desc').value || '';
+            Achievement.unlock(title, score, desc);
+            setTimeout(refreshList, 500);
+        }
+        
+        function refreshList() {
+            const list = document.getElementById('unlocked-list');
+            const unlocked = AchievementTracker.getUnlocked();
+            
+            document.getElementById('total-score').textContent = AchievementTracker.getGamerscore();
+            document.getElementById('total-unlocked').textContent = unlocked.length;
+            
+            if (unlocked.length === 0) {
+                list.innerHTML = '<div class="empty-state">No achievements unlocked yet. Start clicking!</div>';
+                return;
+            }
+            
+            // Sort by most recent first
+            const sorted = [...unlocked].sort((a, b) => b.unlockedAt - a.unlockedAt);
+            
+            list.innerHTML = sorted.map(a => `
+                <div class="unlocked-item">
+                    <div class="unlocked-icon">
+                        <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                    </div>
+                    <div class="unlocked-info">
+                        <div class="unlocked-title">${a.title}</div>
+                        ${a.description ? `<div class="unlocked-desc">${a.description}</div>` : ''}
+                    </div>
+                    <div class="unlocked-meta">
+                        <div class="unlocked-score">${a.gamerscore}G</div>
+                        <div>${formatDate(a.unlockedAt)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function formatDate(timestamp) {
+            const date = new Date(timestamp);
+            return date.toLocaleDateString();
+        }
+        
+        function resetProgress() {
+            if (confirm('Reset all achievement progress? This cannot be undone.')) {
+                AchievementTracker.reset();
+                refreshList();
+            }
+        }
+        
+        // Listen for new achievements
+        window.addEventListener('achievement-unlocked', () => {
+            setTimeout(refreshList, 500);
+        });
+        
+        // Initial load
+        refreshList();
+    </script>
+</body>
+</html>

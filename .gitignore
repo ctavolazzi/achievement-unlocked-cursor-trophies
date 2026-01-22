@@ -1,0 +1,14 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
+*.swo
+
+# Dependencies (if added later)
+node_modules/
+
+# Build (if added later)
+dist/

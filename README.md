@@ -44,25 +44,53 @@ Xbox 360-style achievement notifications for developers. Celebrate your coding m
 
 ## API
 
-### `Achievement.unlock(title, gamerscore, description)`
-
-Shows an achievement notification.
-
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| title | string | "Achievement Unlocked" | Achievement name |
-| gamerscore | number | 50 | Points value (displays as "50G") |
-| description | string | "" | Optional description |
-
-### `AchievementTracker`
-
-Tracks unlocked achievements in localStorage.
+### Quick Notification
 
 ```javascript
-AchievementTracker.getGamerscore()  // Total score
-AchievementTracker.getUnlocked()    // Array of unlocked achievements
-AchievementTracker.isUnlocked(title) // Check if unlocked
-AchievementTracker.reset()          // Clear all progress
+Achievement.unlock("Ship It!", 50, "Deployed to production")
+```
+
+### Full CRUD API
+
+```javascript
+// CREATE - Define achievements
+Achievements.define({ id: 'my-achievement', title: 'My Achievement', score: 50, desc: 'You did it!' })
+Achievements.defineMany([...])    // Define multiple
+Achievements.loadDefaults()       // Load preset achievements
+
+// READ
+Achievements.get('ship-it')       // Get one achievement
+Achievements.all()                // Get all achievements
+Achievements.unlocked()           // Get unlocked only
+Achievements.locked()             // Get locked only
+Achievements.score()              // Total gamerscore
+Achievements.stats()              // { total, unlocked, locked, score, maxScore }
+
+// UPDATE
+Achievements.unlock('ship-it')    // Unlock (shows notification)
+Achievements.unlock('id', true)   // Unlock silently (no popup)
+Achievements.lock('ship-it')      // Re-lock an achievement
+
+// DELETE
+Achievements.remove('custom-id')  // Remove an achievement
+Achievements.reset()              // Clear all progress
+
+// IMPORT/EXPORT
+Achievements.export()             // Get JSON string
+Achievements.import(json)         // Load from JSON
+```
+
+### Achievement Definition
+
+```javascript
+Achievements.define({
+    id: 'unique-id',           // Required: unique identifier
+    title: 'Achievement Name', // Required: display name
+    score: 50,                 // Gamerscore value (default: 50)
+    desc: 'Description',       // Description text
+    icon: 'rocket',            // Icon name (trophy, rocket, bug, check, etc.)
+    secret: false              // Hidden until unlocked?
+})
 ```
 
 ### `AchievementPresets`
@@ -94,12 +122,27 @@ Then use Playwright to trigger achievements:
 Achievement.unlock("Code Review Complete", 25, "Reviewed 5 PRs today");
 ```
 
-## Demo
+## Demo Pages
 
-Open `index.html` in a browser to try the interactive demo:
-- Create custom achievements
-- Try preset achievements
-- View your unlocked achievements and total Gamerscore
+### Gallery (`gallery.html`)
+Full achievement gallery with:
+- All achievements (locked/unlocked)
+- Progress bar and stats
+- Filter by status
+- Click to unlock/lock
+- Export/Import
+
+### Playground (`index.html`)
+Quick testing with:
+- Custom achievement creator
+- Preset buttons
+- Unlock history
+
+### Single Achievement (`achievement.html`)
+URL-param based notification:
+```
+achievement.html?title=Ship%20It!&score=50&desc=Deployed
+```
 
 ## File Structure
 

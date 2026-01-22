@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievement Gallery</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a2e 50%, #0d1f2d 100%);
+            min-height: 100vh;
+            color: #fff;
+            padding: 40px 20px;
+        }
+        
+        .container { max-width: 1000px; margin: 0 auto; }
+        
+        header { text-align: center; margin-bottom: 40px; }
+        
+        h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #107c10, #2ecc71, #107c10);
+            background-size: 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s ease infinite;
+        }
+        
+        @keyframes shimmer { 0%, 100% { background-position: 0%; } 50% { background-position: 100%; } }
+        
+        .subtitle { color: #666; margin-top: 8px; }
+        
+        /* Stats Bar */
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            padding: 25px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 16px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .stat { text-align: center; }
+        .stat-value { font-size: 2.5rem; font-weight: 700; color: #107c10; }
+        .stat-label { color: #666; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
+        
+        /* Progress Bar */
+        .progress-container { margin-bottom: 40px; }
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #107c10, #2ecc71);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        .progress-text { text-align: center; margin-top: 8px; color: #666; font-size: 0.9rem; }
+        
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+        
+        .tab {
+            padding: 10px 24px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        
+        .tab:hover { background: rgba(255,255,255,0.1); }
+        .tab.active { background: #107c10; border-color: #107c10; }
+        
+        /* Achievement Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+        
+        .achievement {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            gap: 16px;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .achievement:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+        }
+        
+        .achievement.locked {
+            opacity: 0.5;
+            filter: grayscale(0.5);
+        }
+        
+        .achievement.locked:hover {
+            opacity: 0.7;
+        }
+        
+        .achievement.unlocked {
+            border-color: rgba(16,124,16,0.3);
+            background: rgba(16,124,16,0.05);
+        }
+        
+        .achievement.unlocked:hover {
+            border-color: rgba(16,124,16,0.5);
+        }
+        
+        .icon-wrap {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.5rem;
+        }
+        
+        .unlocked .icon-wrap {
+            background: linear-gradient(135deg, #107c10, #0e6b0e);
+            box-shadow: 0 4px 16px rgba(16,124,16,0.3);
+        }
+        
+        .locked .icon-wrap {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .info { flex: 1; min-width: 0; }
+        
+        .title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        
+        .title { font-weight: 600; font-size: 1rem; }
+        .score { color: #888; font-size: 0.9rem; }
+        .unlocked .score { color: #107c10; }
+        
+        .desc { color: #888; font-size: 0.85rem; }
+        .locked .desc { color: #555; }
+        
+        .unlock-date {
+            font-size: 0.75rem;
+            color: #107c10;
+            margin-top: 6px;
+        }
+        
+        .secret-badge {
+            font-size: 0.7rem;
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+        
+        /* Actions */
+        .actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        button:hover {
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-1px);
+        }
+        
+        button.primary {
+            background: #107c10;
+            border-color: #107c10;
+        }
+        
+        button.primary:hover {
+            background: #0e6b0e;
+        }
+        
+        /* Empty State */
+        .empty {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+        }
+        
+        /* Icons */
+        .icon { width: 24px; height: 24px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Achievement Gallery</h1>
+            <p class="subtitle">Your coding milestones</p>
+        </header>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-value" id="score">0</div>
+                <div class="stat-label">Gamerscore</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="unlocked">0</div>
+                <div class="stat-label">Unlocked</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="total">0</div>
+                <div class="stat-label">Total</div>
+            </div>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress" style="width: 0%"></div>
+            </div>
+            <div class="progress-text" id="progress-text">0% Complete</div>
+        </div>
+        
+        <div class="tabs">
+            <div class="tab active" data-filter="all">All</div>
+            <div class="tab" data-filter="unlocked">Unlocked</div>
+            <div class="tab" data-filter="locked">Locked</div>
+        </div>
+        
+        <div class="grid" id="grid"></div>
+        
+        <div class="actions">
+            <button onclick="unlockRandom()">Unlock Random</button>
+            <button onclick="exportData()">Export</button>
+            <button onclick="resetAll()">Reset All</button>
+        </div>
+    </div>
+    
+    <script src="src/achievement.js"></script>
+    <script src="src/api.js"></script>
+    <script>
+        const icons = {
+            trophy: '🏆', rocket: '🚀', bug: '🐛', check: '✅', code: '💻',
+            merge: '🔀', book: '📖', moon: '🌙', sun: '☀️', calendar: '📅',
+            dollar: '💰', sparkle: '✨', fire: '🔥', git: '🔱', globe: '🌍',
+            crown: '👑', default: '⭐'
+        };
+        
+        let currentFilter = 'all';
+        
+        function render() {
+            const stats = Achievements.stats();
+            document.getElementById('score').textContent = stats.score;
+            document.getElementById('unlocked').textContent = stats.unlocked;
+            document.getElementById('total').textContent = stats.total;
+            
+            const percent = stats.total ? Math.round((stats.unlocked / stats.total) * 100) : 0;
+            document.getElementById('progress').style.width = percent + '%';
+            document.getElementById('progress-text').textContent = `${percent}% Complete (${stats.score}/${stats.maxScore}G)`;
+            
+            let achievements = Achievements.all();
+            
+            if (currentFilter === 'unlocked') achievements = achievements.filter(a => a.unlocked);
+            if (currentFilter === 'locked') achievements = achievements.filter(a => !a.unlocked);
+            
+            // Sort: unlocked first, then by score
+            achievements.sort((a, b) => {
+                if (a.unlocked !== b.unlocked) return b.unlocked - a.unlocked;
+                return b.score - a.score;
+            });
+            
+            const grid = document.getElementById('grid');
+            
+            if (achievements.length === 0) {
+                grid.innerHTML = '<div class="empty">No achievements to show</div>';
+                return;
+            }
+            
+            grid.innerHTML = achievements.map(a => {
+                const icon = icons[a.icon] || icons.default;
+                const isSecret = a.secret && !a.unlocked;
+                const title = isSecret ? '???' : a.title;
+                const desc = isSecret ? 'Secret achievement' : a.desc;
+                const date = a.unlockedAt ? new Date(a.unlockedAt).toLocaleDateString() : '';
+                
+                return `
+                    <div class="achievement ${a.unlocked ? 'unlocked' : 'locked'}" onclick="toggleAchievement('${a.id}')">
+                        <div class="icon-wrap">${icon}</div>
+                        <div class="info">
+                            <div class="title-row">
+                                <span class="title">${title}${a.secret ? '<span class="secret-badge">SECRET</span>' : ''}</span>
+                                <span class="score">${a.score}G</span>
+                            </div>
+                            <div class="desc">${desc}</div>
+                            ${a.unlocked ? `<div class="unlock-date">Unlocked ${date}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function toggleAchievement(id) {
+            const a = Achievements.get(id);
+            if (a.unlocked) {
+                Achievements.lock(id);
+            } else {
+                Achievements.unlock(id);
+            }
+            render();
+        }
+        
+        function unlockRandom() {
+            const locked = Achievements.locked().filter(a => !a.secret);
+            if (locked.length === 0) {
+                alert('All non-secret achievements unlocked!');
+                return;
+            }
+            const pick = locked[Math.floor(Math.random() * locked.length)];
+            Achievements.unlock(pick.id);
+            render();
+        }
+        
+        function exportData() {
+            const data = Achievements.export();
+            const blob = new Blob([data], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'achievements.json';
+            a.click();
+        }
+        
+        function resetAll() {
+            if (confirm('Reset all progress? This cannot be undone.')) {
+                Achievements.reset();
+                Achievements.loadDefaults();
+                render();
+            }
+        }
+        
+        // Tab handling
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.onclick = () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                currentFilter = tab.dataset.filter;
+                render();
+            };
+        });
+        
+        // Listen for changes
+        window.addEventListener('achievement-change', render);
+        
+        // Initial render
+        render();
+    </script>
+</body>
+</html>

@@ -2,39 +2,50 @@
 
 Pop an Xbox-style achievement notification to celebrate milestones!
 
-## Instructions
+## Quick Usage (Recommended)
 
-1. Use Playwright browser tools to navigate to a page with the achievement system loaded
-2. Execute `Achievement.unlock()` with the desired title, score, and description
-3. The notification will slide in, play a sound, and auto-dismiss
+Navigate to the standalone achievement page with URL params:
 
-## Usage Examples
+```
+browser_navigate to file:///Users/ctavolazzi/Code/achievement-unlocked-cursor-trophies/achievement.html?title=Ship%20It!&score=50&desc=Deployed%20to%20production
+```
 
+Or if serving locally:
+```
+browser_navigate to http://localhost:5051/achievement.html?title=Nice%20Work!&score=25&desc=You%20did%20it!
+```
+
+## URL Parameters
+
+| Param | Description | Default |
+|-------|-------------|---------|
+| title | Achievement name | "Achievement Unlocked" |
+| score | Gamerscore value | 50 |
+| desc | Description text | (none) |
+
+## Examples
+
+```
+# Basic
+?title=Ship%20It!&score=50
+
+# With description  
+?title=Bug%20Squasher&score=25&desc=Fixed%20a%20nasty%20bug
+
+# Celebration
+?title=First%20Sale!&score=100&desc=Someone%20paid%20real%20money
+```
+
+## Alternative: Full Demo Page
+
+For the interactive demo with tracking:
+```
+browser_navigate to http://localhost:5051/index.html
+```
+
+Then use JavaScript:
 ```javascript
-// Basic
-Achievement.unlock("Ship It!", 50, "Deployed to production")
-
-// Quick presets
+Achievement.unlock("Title", 50, "Description")
 AchievementPresets.shipIt()
-AchievementPresets.bugSquashed()
-AchievementPresets.allGreen()
 AchievementPresets.random()
-
-// Custom
-Achievement.unlock("{{title}}", {{score}}, "{{description}}")
-```
-
-## Default Behavior
-
-If no parameters provided, use:
-```javascript
-Achievement.unlock("Nice Work!", 50, "Keep it up!")
-```
-
-## Quick Test
-
-Navigate to the demo page and trigger an achievement:
-```
-1. browser_navigate to http://localhost:5050 (or wherever the demo is hosted)
-2. browser_evaluate: Achievement.unlock("Test", 10, "It works!")
 ```

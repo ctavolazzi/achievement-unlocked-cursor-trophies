@@ -25,7 +25,7 @@ Xbox 360-style achievement notifications for developers. Celebrate your coding m
 <script>
   // Unlock an achievement
   Achievement.unlock("Ship It!", 50, "Deployed to production");
-  
+
   // Or use presets
   AchievementPresets.shipIt();
   AchievementPresets.bugSquashed();
@@ -102,9 +102,14 @@ AchievementPresets.shipIt()         // 50G - Deployed to production
 AchievementPresets.bugSquashed()    // 25G - Fixed a nasty bug
 AchievementPresets.allGreen()       // 25G - All tests passing
 AchievementPresets.firstCommit()    // 15G - Made your first commit
+AchievementPresets.firstBlood()     // 10G - First achievement unlocked
 AchievementPresets.merged()         // 25G - PR merged to main
 AchievementPresets.documented()     // 20G - Wrote documentation
 AchievementPresets.nightOwl()       // 10G - Coding past midnight
+AchievementPresets.earlyBird()      // 10G - Coding before 7am
+AchievementPresets.streakMaster(7)  // 5G per day - 7 day streak
+AchievementPresets.centuryClub()    // 100G - Reach 100G total
+AchievementPresets.completionist()  // 200G - Unlock all achievements
 AchievementPresets.firstSale()      // 100G - Someone paid real money
 AchievementPresets.random()         // ???  - Random achievement!
 

@@ -5,41 +5,45 @@
 
 const AchievementPresets = {
     // === Development Milestones ===
-    
+
     shipIt() {
         Achievement.unlock("Ship It!", 50, "Deployed to production");
     },
-    
+
     bugSquashed() {
         Achievement.unlock("Bug Squasher", 25, "Fixed a nasty bug");
     },
-    
+
     allGreen() {
         Achievement.unlock("All Green", 25, "All tests passing");
     },
-    
+
     firstCommit() {
         Achievement.unlock("Hello World", 15, "Made your first commit");
     },
-    
+
+    firstBlood() {
+        Achievement.unlock("First Blood", 10, "Unlocked your first achievement");
+    },
+
     refactored() {
         Achievement.unlock("Clean Code", 30, "Refactored legacy code");
     },
-    
+
     documented() {
         Achievement.unlock("Future You Thanks You", 20, "Wrote documentation");
     },
-    
+
     codeReview() {
         Achievement.unlock("Fresh Eyes", 15, "Completed a code review");
     },
-    
+
     merged() {
         Achievement.unlock("Merge Master", 25, "PR merged to main");
     },
-    
+
     // === Time-based ===
-    
+
     nightOwl() {
         const hour = new Date().getHours();
         if (hour >= 0 && hour < 5) {
@@ -48,7 +52,7 @@ const AchievementPresets = {
             console.log("It's not late enough for Night Owl (midnight-5am)");
         }
     },
-    
+
     earlyBird() {
         const hour = new Date().getHours();
         if (hour >= 5 && hour < 7) {
@@ -57,7 +61,7 @@ const AchievementPresets = {
             console.log("It's not early enough for Early Bird (5am-7am)");
         }
     },
-    
+
     weekendWarrior() {
         const day = new Date().getDay();
         if (day === 0 || day === 6) {
@@ -66,72 +70,88 @@ const AchievementPresets = {
             console.log("It's not the weekend!");
         }
     },
-    
+
     // === Streaks ===
-    
+
     streak(days) {
         const score = Math.min(days * 5, 100);
         Achievement.unlock(`${days} Day Streak`, score, `${days} consecutive days of commits`);
     },
-    
+
+    streakMaster(days = 1) {
+        const totalDays = Math.max(1, Math.floor(Number(days) || 1));
+        const score = Math.min(totalDays * 5, 100);
+        Achievement.unlock("Streak Master", score, `${totalDays} consecutive days`);
+    },
+
+    // === Meta ===
+
+    centuryClub() {
+        Achievement.unlock("Century Club", 100, "Reached 100G total");
+    },
+
+    completionist() {
+        Achievement.unlock("Completionist", 200, "Unlocked all achievements");
+    },
+
     // === Fun / Celebration ===
-    
+
     firstSale() {
         Achievement.unlock("First Sale!", 100, "Someone paid real money");
     },
-    
+
     viralPost() {
         Achievement.unlock("Going Viral", 75, "Your post blew up");
     },
-    
+
     tenThousandUsers() {
         Achievement.unlock("10K Club", 150, "Reached 10,000 users");
     },
-    
+
     oneYearAnniversary() {
         Achievement.unlock("Veteran", 100, "One year on the project");
     },
-    
+
     // === Learning ===
-    
+
     newLanguage() {
         Achievement.unlock("Polyglot", 40, "Learned a new programming language");
     },
-    
+
     tutorialComplete() {
         Achievement.unlock("Student", 20, "Completed a tutorial");
     },
-    
+
     certification() {
         Achievement.unlock("Certified", 75, "Earned a certification");
     },
-    
+
     // === Collaboration ===
-    
+
     firstPR() {
         Achievement.unlock("Contributor", 25, "Opened your first PR");
     },
-    
+
     openSourceContrib() {
         Achievement.unlock("Open Sourcerer", 50, "Contributed to open source");
     },
-    
+
     helpedSomeone() {
         Achievement.unlock("Good Samaritan", 15, "Helped another developer");
     },
-    
+
     pairProgramming() {
         Achievement.unlock("Dynamic Duo", 20, "Pair programming session complete");
     },
-    
+
     // === Custom ===
-    
+
     custom(title, gamerscore = 50, description = "") {
         Achievement.unlock(title, gamerscore, description);
     },
-    
+
     // === Random for fun ===
-    
+
     random() {
         const achievements = [
             ["Lucky Roll", 25, "Random achievement unlocked!"],
@@ -143,13 +163,14 @@ const AchievementPresets = {
         const pick = achievements[Math.floor(Math.random() * achievements.length)];
         Achievement.unlock(...pick);
     },
-    
+
     // List all available presets
     list() {
         const presets = [
-            "shipIt()", "bugSquashed()", "allGreen()", "firstCommit()",
+            "shipIt()", "bugSquashed()", "allGreen()", "firstCommit()", "firstBlood()",
             "refactored()", "documented()", "codeReview()", "merged()",
-            "nightOwl()", "earlyBird()", "weekendWarrior()", "streak(days)",
+            "nightOwl()", "earlyBird()", "weekendWarrior()", "streak(days)", "streakMaster(days)",
+            "centuryClub()", "completionist()",
             "firstSale()", "viralPost()", "tenThousandUsers()", "oneYearAnniversary()",
             "newLanguage()", "tutorialComplete()", "certification()",
             "firstPR()", "openSourceContrib()", "helpedSomeone()", "pairProgramming()",

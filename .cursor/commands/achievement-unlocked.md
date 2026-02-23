@@ -15,6 +15,20 @@ Or if serving locally:
 browser_navigate to http://localhost:5051/achievement.html?title=Nice%20Work!&score=25&desc=You%20did%20it!
 ```
 
+## Direct JS Usage
+
+If the scripts are already loaded on the page, run:
+
+```javascript
+Achievement.unlock("Nice!", 50, "You did a thing")
+```
+
+Template:
+
+```javascript
+Achievement.unlock("{{title}}", {{score}}, "{{description}}")
+```
+
 ## URL Parameters
 
 | Param | Description | Default |
@@ -29,7 +43,7 @@ browser_navigate to http://localhost:5051/achievement.html?title=Nice%20Work!&sc
 # Basic
 ?title=Ship%20It!&score=50
 
-# With description  
+# With description
 ?title=Bug%20Squasher&score=25&desc=Fixed%20a%20nasty%20bug
 
 # Celebration
